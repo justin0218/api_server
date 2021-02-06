@@ -65,3 +65,26 @@ func (s *PublicController) GetShortUrl(c *gin.Context) {
 	resp.RespOk(c, ret)
 	return
 }
+
+func (s *PublicController) GetJssdk(c *gin.Context) {
+	url := c.Query("url")
+	if url == "" {
+		resp.RespParamErr(c)
+		return
+	}
+	client := wechat_server.GetClient()
+	ret, err := client.GetJssdk(c, &wechat_server.GetJssdkReq{
+		Account: wechat_server.Account_momo_za_huo_pu,
+		Url:     url,
+	})
+	if err != nil {
+		resp.RespGeneralErr(c, err.Error())
+		return
+	}
+	if ret.Res.Code != 200 {
+		resp.RespGeneralErr(c, ret.Res.Msg)
+		return
+	}
+	resp.RespOk(c, ret)
+	return
+}

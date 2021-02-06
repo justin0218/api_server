@@ -26,11 +26,10 @@ func Init() *gin.Engine {
 	})
 
 	userController := new(controllers.UserController)
-	userOpenApi := r.Group("open/user")
-	userOpenApi.POST("login", userController.Login)
-
 	publicController := new(controllers.PublicController)
-	publicOpenApi := r.Group("open/public")
-	publicOpenApi.GET("short-url", publicController.GetShortUrl)
+	openApi := r.Group("open")
+	openApi.POST("/user/login", userController.Login)
+	openApi.GET("/public/short-url", publicController.GetShortUrl)
+	openApi.POST("/public/js-sdk", publicController.GetJssdk)
 	return r
 }
