@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+option go_package = "auth_server";
+
+service auth {
+  rpc create_token(create_token_req) returns (create_token_res) {}
+  rpc verify_token(verify_token_req) returns (verify_token_res) {}
+}
+
+enum token_type {
+  ADMIN = 0;
+  CLIENT = 1;
+}
+
+message create_token_req {
+  int64 uid = 1;
+  token_type token_type = 2;
+}
+
+message create_token_res {
+  int64 code = 1;
+  string msg = 2;
+  string token = 3;
+}
+
+message verify_token_req {
+  int64 uid = 1;
+  token_type token_type = 2;
+  string token = 3;
+}
+
+message verify_token_res {
+  int64 code = 1;
+  string msg = 2;
+  int64 uid = 3;
+}
+
+
+//protoc -I . --go_out=plugins=grpc:. protos/payserver/payserver.proto
+//protoc --js_out=import_style=commonjs,binary:. ./payserver.proto
+
+//protoc payserver.proto --js_out=import_style=commonjs:generated --grpc-web_out=import_style=commonjs,mode=grpcweb,out=echo_grpc_pb.js:./

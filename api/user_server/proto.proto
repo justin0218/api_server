@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+option go_package = "user_server";
+
+service user {
+  rpc admin_send_email_code(admin_send_email_code_req) returns (admin_send_email_code_res) {}
+  rpc admin_register(admin_register_req) returns (admin_register_res) {}
+  rpc admin_login(admin_login_req) returns (admin_register_res) {}
+  rpc admin_password_back(admin_password_back_req) returns (admin_password_back_res) {}
+  rpc admin_data_full(admin_data_full_req) returns (res) {}
+  rpc client_user_wechat_login(client_user_wechat_login_req) returns (client_user_wechat_login_res) {}
+}
+
+message admin_send_email_code_req {
+  string email = 1;
+  string from = 2;
+}
+
+message admin_send_email_code_res {
+  int64 code = 1;
+  string msg = 2;
+}
+
+message admin_register_req {
+  string email = 1;
+  string code = 2;
+}
+
+message admin_register_res {
+  int64 code = 1;
+  string msg = 2;
+  int64 uid = 3;
+  string name = 4;
+  string avatar = 5;
+  string email = 6;
+  string last_login_at = 7;
+  string created_at = 8;
+  string token = 9;
+  repeated string roles = 10;
+}
+
+message admin_login_req {
+  string email = 1;
+  string password = 2;
+}
+
+message admin_password_back_req{
+  string email = 1;
+  string code = 2;
+  string password = 3;
+}
+
+message admin_password_back_res{
+  int64 code = 1;
+  string msg = 2;
+}
+
+message admin_data_full_req{
+  int64 uid = 1;
+  string name = 2;
+  string avatar = 3;
+  string password = 4;
+}
+
+message res{
+  int64 code = 1;
+  string msg = 2;
+}
+
+message client_user_wechat_login_req{
+  string code = 1;
+}
+
+message client_user_wechat_login_res{
+  string token = 1;
+  int64 uid = 2;
+  string openid = 3;
+  string avatar = 4;
+  string nickname = 5;
+  int32 code = 6;
+  string msg = 7;
+}
+
+
+//protoc -I . --go_out=plugins=grpc:. api/proto/proto.proto

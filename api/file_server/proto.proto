@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option go_package = "file_server";
+
+service file {
+  rpc upload_local(upload_local_req) returns (upload_local_res) {}
+}
+
+message r{
+  int64 code = 1;
+  string msg = 2;
+}
+
+message upload_local_req{
+  bytes file_bytes = 1;
+  string name = 2;
+  string format = 3;
+}
+
+message upload_local_res{
+  r res = 1;
+  string name = 2;
+  string format = 3;
+  int64 size = 4;
+  string url = 5;
+}
+
+//protoc -I . --go_out=plugins=grpc:. api/file_server/proto.proto
