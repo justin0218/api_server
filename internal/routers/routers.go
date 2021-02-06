@@ -30,6 +30,6 @@ func Init() *gin.Engine {
 	openApi := r.Group("open")
 	openApi.POST("/user/login", userController.Login)
 	openApi.GET("/public/short-url", publicController.GetShortUrl)
-	openApi.POST("/public/js-sdk", publicController.GetJssdk)
+	openApi.GET("/public/js-sdk", publicController.GetJssdk)
 	return r
 }
