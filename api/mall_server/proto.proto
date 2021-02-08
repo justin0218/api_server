@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option go_package = "mall_server";
+
+service mall {
+  rpc get_goods_detail(get_goods_detail_req) returns (get_goods_detail_res) {}
+}
+
+message sku{
+  int64 id = 1;
+  string name = 2;
+  string cover = 3;
+  int64 goods_id = 4;
+  int64 price = 5;
+  int64 inventory = 6;
+}
+
+message get_goods_detail_req{
+  int64 goods_id = 1;
+}
+
+message get_goods_detail_res{
+  int64 goods_id = 1;
+  string name = 2;
+  string images = 3;
+  int32 status = 4;
+  repeated sku skus = 5;
+}
+
+//protoc -I . --go_out=plugins=grpc:. api/mall_server/proto.proto

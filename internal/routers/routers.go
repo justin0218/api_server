@@ -2,6 +2,7 @@ package routers
 
 import (
 	"api_server/internal/controllers"
+	"api_server/internal/middleware"
 	"api_server/store"
 	"github.com/gin-gonic/gin"
 	cors "github.com/itsjamie/gin-cors"
@@ -31,5 +32,10 @@ func Init() *gin.Engine {
 	openApi.POST("/user/login", userController.Login)
 	openApi.GET("/public/short-url", publicController.GetShortUrl)
 	openApi.GET("/public/js-sdk", publicController.GetJssdk)
+
+	authApi := r.Group("").Use(middleware.VerifyToken())
+
+	mallController := new(controllers.MallController)
+	authApi.GET("goods/info", mallController.GetGoodsInfo)
 	return r
 }
