@@ -20,7 +20,7 @@ func VerifyToken() gin.HandlerFunc {
 		uid := c.Query("uid")
 		uidInt64, err := strconv.ParseInt(uid, 10, 64)
 		if err != nil {
-			resp.RespCode(c, http.StatusUnauthorized, "未授权")
+			resp.RespCode(c, http.StatusUnauthorized, "未授权ll")
 			c.Abort()
 			return
 		}
