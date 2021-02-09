@@ -1,20 +1,22 @@
 package controllers
 
 import (
-	"api_server/api/user_server"
+	"api_server/internal/services"
 	"api_server/pkg/resp"
-	"context"
 	"github.com/gin-gonic/gin"
 )
 
 type UserController struct {
+	clientUser services.ClientUser
 }
 
 func (s *UserController) Login(c *gin.Context) {
 	code := c.Query("code")
-	userServer := user_server.GetClient()
-	req := &user_server.ClientUserWechatLoginReq{Code: code}
-	ret, err := userServer.ClientUserWechatLogin(context.Background(), req)
+	if code == "" {
+		resp.RespParamErr(c)
+		return
+	}
+	ret, err := s.clientUser.Login(c, code)
 	if err != nil {
 		resp.RespGeneralErr(c, err.Error())
 		return

@@ -58,10 +58,6 @@ func (s *PublicController) GetShortUrl(c *gin.Context) {
 		resp.RespGeneralErr(c, err.Error())
 		return
 	}
-	if ret.Res.Code != 200 {
-		resp.RespGeneralErr(c, ret.Res.Msg)
-		return
-	}
 	resp.RespOk(c, ret)
 	return
 }
@@ -79,10 +75,6 @@ func (s *PublicController) GetJssdk(c *gin.Context) {
 	})
 	if err != nil {
 		resp.RespGeneralErr(c, err.Error())
-		return
-	}
-	if ret.Res.Code != 200 {
-		resp.RespGeneralErr(c, ret.Res.Msg)
 		return
 	}
 	resp.RespOk(c, ret)

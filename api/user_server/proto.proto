@@ -8,7 +8,10 @@ service user {
   rpc admin_login(admin_login_req) returns (admin_register_res) {}
   rpc admin_password_back(admin_password_back_req) returns (admin_password_back_res) {}
   rpc admin_data_full(admin_data_full_req) returns (res) {}
-  rpc client_user_wechat_login(client_user_wechat_login_req) returns (client_user_wechat_login_res) {}
+  rpc client_get_user_by_openid(client_get_user_by_openid_req) returns (client_get_user_by_openid_res) {}
+  rpc client_get_user_by_uid(client_get_user_by_uid_req) returns (client_get_user_by_uid_res) {}
+  rpc client_create_user(client_create_user_req) returns (client_create_user_res) {}
+  rpc client_update_by_uid(client_update_by_uid_req) returns (client_update_by_uid_res) {}
 }
 
 message admin_send_email_code_req {
@@ -67,18 +70,49 @@ message res{
   string msg = 2;
 }
 
-message client_user_wechat_login_req{
-  string code = 1;
+message client_get_user_by_openid_req{
+  string openid = 1;
 }
 
-message client_user_wechat_login_res{
-  string token = 1;
-  int64 uid = 2;
-  string openid = 3;
-  string avatar = 4;
-  string nickname = 5;
-  int32 code = 6;
-  string msg = 7;
+message client_get_user_by_openid_res{
+  int64 uid = 1;
+  string openid = 2;
+  string avatar = 3;
+  string nickname = 4;
+  int32 code = 5;
+}
+
+message client_get_user_by_uid_req{
+  int64 uid = 1;
+}
+
+message client_get_user_by_uid_res{
+  int64 uid = 1;
+  string openid = 2;
+  string avatar = 3;
+  string nickname = 4;
+  int32 code = 5;
+  string msg = 6;
+}
+
+message client_create_user_req{
+  string openid = 1;
+  string avatar = 2;
+  string nickname = 3;
+}
+
+message client_create_user_res{
+  int64 uid = 1;
+}
+
+message client_update_by_uid_req{
+  int64 uid = 1;
+  string avatar = 2;
+  string nickname = 3;
+}
+
+message client_update_by_uid_res{
+
 }
 
 
