@@ -36,7 +36,7 @@ func VerifyToken() gin.HandlerFunc {
 			return
 		}
 		if ret.TokenError == auth_server.TokenError_EXPIRED || ret.TokenError == auth_server.TokenError_USER_MATCH {
-			resp.RespCode(c, http.StatusUnauthorized, "未授权")
+			resp.RespCode(c, http.StatusUnauthorized, "未授权j")
 			c.Abort()
 			return
 		}
