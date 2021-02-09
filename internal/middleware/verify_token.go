@@ -10,8 +10,6 @@ import (
 	"strconv"
 )
 
-var config = new(store.Config)
-
 func VerifyToken() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if new(store.Config).Get().Runmode == "debug" {
@@ -32,7 +30,7 @@ func VerifyToken() gin.HandlerFunc {
 		req.Uid = uidInt64
 		req.Token = token
 		ret, err := conn.VerifyToken(context.Background(), req)
-		if err != nil || ret.Code != 200 {
+		if err != nil || (ret.TokenError == auth_server.TokenError_EXPIRED || ret.TokenError == auth_server.TokenError_USER_MATCH) {
 			resp.RespCode(c, http.StatusUnauthorized, "未授权")
 			c.Abort()
 			return

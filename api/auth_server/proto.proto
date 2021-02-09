@@ -12,15 +12,18 @@ enum token_type {
   CLIENT = 1;
 }
 
+enum token_error{
+  EXPIRED = 0;
+  USER_MATCH = 1;
+}
+
 message create_token_req {
   int64 uid = 1;
   token_type token_type = 2;
 }
 
 message create_token_res {
-  int64 code = 1;
-  string msg = 2;
-  string token = 3;
+  string token = 1;
 }
 
 message verify_token_req {
@@ -30,13 +33,9 @@ message verify_token_req {
 }
 
 message verify_token_res {
-  int64 code = 1;
-  string msg = 2;
-  int64 uid = 3;
+  token_error token_error = 1;
+  int64 uid = 2;
 }
 
 
-//protoc -I . --go_out=plugins=grpc:. protos/payserver/payserver.proto
-//protoc --js_out=import_style=commonjs,binary:. ./payserver.proto
-
-//protoc payserver.proto --js_out=import_style=commonjs:generated --grpc-web_out=import_style=commonjs,mode=grpcweb,out=echo_grpc_pb.js:./
+//protoc -I . --go_out=plugins=grpc:. api/auth_server/proto.proto
