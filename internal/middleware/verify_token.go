@@ -20,7 +20,7 @@ func VerifyToken() gin.HandlerFunc {
 		uid := c.Query("uid")
 		uidInt64, err := strconv.ParseInt(uid, 10, 64)
 		if err != nil {
-			resp.RespCode(c, http.StatusUnauthorized, "未授权ll")
+			resp.RespCode(c, http.StatusUnauthorized, "未授权")
 			c.Abort()
 			return
 		}
@@ -36,7 +36,7 @@ func VerifyToken() gin.HandlerFunc {
 			return
 		}
 		if ret.TokenError == auth_server.TokenError_EXPIRED || ret.TokenError == auth_server.TokenError_USER_MATCH {
-			resp.RespCode(c, http.StatusUnauthorized, "未授权j")
+			resp.RespCode(c, http.StatusUnauthorized, ret.TokenError)
 			c.Abort()
 			return
 		}
