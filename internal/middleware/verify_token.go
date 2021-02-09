@@ -28,7 +28,7 @@ func VerifyToken() gin.HandlerFunc {
 		}
 		conn := auth_server.GetClient()
 		req := &auth_server.VerifyTokenReq{}
-		req.TokenType = auth_server.TokenType_ADMIN
+		req.TokenType = auth_server.TokenType_CLIENT
 		req.Uid = uidInt64
 		req.Token = token
 		ret, err := conn.VerifyToken(context.Background(), req)
