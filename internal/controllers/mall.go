@@ -32,3 +32,25 @@ func (s *MallController) GetGoodsInfo(c *gin.Context) {
 	resp.RespOk(c, ret)
 	return
 }
+
+func (s *MallController) CreateOrder(c *gin.Context) {
+	req := new(mall_server.CreateOrderReq)
+	err := c.BindJSON(req)
+	if err != nil {
+		resp.RespParamErr(c, err.Error())
+		return
+	}
+	req.Uid = getUid(c)
+	if req.GoodsId <= 0 || req.SkuId <= 0 || req.BuyNum <= 0 || req.Uid <= 0 || req.Phone == "" || req.Name == "" || req.Province == "" || req.City == "" || req.Region == "" || req.Addr == "" {
+		resp.RespParamErr(c)
+		return
+	}
+	mallServer := mall_server.GetClient()
+	ret, err := mallServer.CreateOrder(c, req)
+	if err != nil {
+		resp.RespInternalErr(c, err.Error())
+		return
+	}
+	resp.RespOk(c, ret)
+	return
+}

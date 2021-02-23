@@ -37,5 +37,6 @@ func Init() *gin.Engine {
 
 	mallController := new(controllers.MallController)
 	authApi.GET("goods/info", mallController.GetGoodsInfo)
+	authApi.POST("order/create", mallController.CreateOrder)
 	return r
 }
