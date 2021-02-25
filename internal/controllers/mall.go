@@ -2,7 +2,10 @@ package controllers
 
 import (
 	"api_server/api/mall_server"
+	"api_server/api/user_server"
+	"api_server/api/wechat_server"
 	"api_server/pkg/resp"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"strconv"
 )
@@ -46,11 +49,36 @@ func (s *MallController) CreateOrder(c *gin.Context) {
 		return
 	}
 	mallServer := mall_server.GetClient()
-	ret, err := mallServer.CreateOrder(c, req)
+	orderInfo, err := mallServer.CreateOrder(c, req)
+	if err != nil {
+		resp.RespInternalErr(c, "库存不足")
+		return
+	}
+	userServer := user_server.GetClient()
+	userInfo, err := userServer.ClientGetUserByUid(c, &user_server.ClientGetUserByUidReq{
+		Uid: req.Uid,
+	})
+	if err != nil {
+		resp.RespInternalErr(c, "不存在的用户")
+		return
+	}
+	wechatServer := wechat_server.GetClient()
+	payInfo, err := wechatServer.DoPay(c, &wechat_server.DoPayReq{
+		Openid:    userInfo.Openid,
+		OrderCode: orderInfo.OrderCode,
+		Body:      fmt.Sprintf("%s-%s", orderInfo.GoodsName, orderInfo.SkuName),
+		Price:     orderInfo.Price,
+		ClientIp:  c.ClientIP(),
+		NotifyUrl: "",
+		TradeType: "JSAPI",
+	})
 	if err != nil {
 		resp.RespInternalErr(c, err.Error())
 		return
 	}
+	ret := make(map[string]interface{})
+	ret["pay_info"] = payInfo
+	ret["order_info"] = orderInfo
 	resp.RespOk(c, ret)
 	return
 }

@@ -42,6 +42,9 @@ message create_order_req{
 }
 message create_order_res{
   string order_code = 1;
+  string goods_name = 2;
+  string sku_name = 3;
+  int64 price = 4;
 }
 
 //protoc -I . --go_out=plugins=grpc:. api/mall_server/proto.proto
