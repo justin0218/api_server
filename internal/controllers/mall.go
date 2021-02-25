@@ -69,7 +69,7 @@ func (s *MallController) CreateOrder(c *gin.Context) {
 		Body:      fmt.Sprintf("%s-%s", orderInfo.GoodsName, orderInfo.SkuName),
 		Price:     orderInfo.Price,
 		ClientIp:  c.ClientIP(),
-		NotifyUrl: "",
+		NotifyUrl: "http://api.momoman.cn/open/public/wx-pay/notice",
 		TradeType: "JSAPI",
 	})
 	if err != nil {

@@ -80,3 +80,8 @@ func (s *PublicController) GetJssdk(c *gin.Context) {
 	resp.RespOk(c, ret)
 	return
 }
+
+func (s *PublicController) WxPayNotice(c *gin.Context) {
+	resp.RespOk(c)
+	return
+}
