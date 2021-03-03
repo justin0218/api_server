@@ -13,6 +13,8 @@ func init() {
 }
 
 func main() {
+	mq := new(store.Rabbitmq)
+	mq.Get()
 	config := new(store.Config)
 	err := routers.Init().Run(fmt.Sprintf(":%d", config.Get().Http.Port))
 	if err != nil {

@@ -3,13 +3,17 @@ package controllers
 import (
 	"api_server/api/file_server"
 	"api_server/api/wechat_server"
+	"api_server/internal/models/wx"
+	"api_server/internal/services"
 	"api_server/pkg/resp"
 	"context"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
+	"net/http"
 )
 
 type PublicController struct {
+	wxPayService services.WxPay
 }
 
 func (s *PublicController) UploadFile(c *gin.Context) {
@@ -82,6 +86,26 @@ func (s *PublicController) GetJssdk(c *gin.Context) {
 }
 
 func (s *PublicController) WxPayNotice(c *gin.Context) {
-	resp.RespOk(c)
+	req := new(wx.WxpayReq)
+	err := c.BindXML(req)
+	if err != nil {
+		resp.RespParamErr(c, err.Error())
+		return
+	}
+	res := new(wx.WxpayRes)
+	if req.ResultCode == "SUCCESS" {
+		err := s.wxPayService.WxPayNotice(req)
+		if err != nil {
+			resp.RespGeneralErr(c, err.Error())
+			return
+		}
+		res.ReturnCode = "SUCCESS"
+		res.ReturnMsg = "OK"
+		c.XML(http.StatusOK, res)
+		return
+	}
+	res.ReturnCode = "FAIL"
+	res.ReturnMsg = "FAIL"
+	c.XML(http.StatusOK, res)
 	return
 }

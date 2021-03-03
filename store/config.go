@@ -21,6 +21,9 @@ type cfg struct {
 		Key    string `yaml:"key"`
 		Schema string `yaml:"schema"`
 	} `yaml:"etcd"`
+	Rabbitmq struct {
+		Addr string `yaml:"addr"`
+	} `yaml:"rabbitmq"`
 }
 
 func (s *Config) Get() (conf cfg) {

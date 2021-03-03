@@ -33,7 +33,7 @@ func Init() *gin.Engine {
 	openApi.GET("/public/short-url", publicController.GetShortUrl)
 	openApi.GET("/public/js-sdk", publicController.GetJssdk)
 
-	openApi.Any("/public/wx-pay/notice", publicController.WxPayNotice)
+	openApi.POST("/public/wx-pay/notice", publicController.WxPayNotice)
 
 	authApi := r.Group("auth").Use(middleware.VerifyToken())
 
